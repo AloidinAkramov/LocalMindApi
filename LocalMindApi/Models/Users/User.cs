@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LocalMindApi.Models.UserAdditionalDetails;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace LocalMindApi.Models.Users
