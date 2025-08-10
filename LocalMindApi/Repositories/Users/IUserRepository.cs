@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LocalMindApi.Repositories
+namespace LocalMindApi.Repositories.Users
 {
     public interface IUserRepository
     {

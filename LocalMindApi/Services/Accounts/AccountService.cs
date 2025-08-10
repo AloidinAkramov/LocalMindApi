@@ -2,7 +2,7 @@
 using LocalMindApi.Models.UserCredentials;
 using LocalMindApi.Models.Users;
 using LocalMindApi.Models.UserTokens;
-using LocalMindApi.Repositories;
+using LocalMindApi.Repositories.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;

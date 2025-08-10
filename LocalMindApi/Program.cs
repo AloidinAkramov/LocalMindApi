@@ -1,5 +1,6 @@
 using LocalMindApi.DataContext;
-using LocalMindApi.Repositories;
+using LocalMindApi.Repositories.UserAdditionalDetails;
+using LocalMindApi.Repositories.Users;
 using LocalMindApi.Services.Accounts;
 using LocalMindApi.Services.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace LocalMindApi
 {
@@ -41,11 +43,16 @@ namespace LocalMindApi
 
             builder.Services.AddAuthorization();
 
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                options.JsonSerializerOptions.WriteIndented = true;
+            });
             builder.Services.AddTransient<IUserRepository, UserRepository>();
+            builder.Services.AddTransient<IUserAdditionalDetailRepository , UserAdditionalDetailRepository>();
             builder.Services.AddTransient<IUserService, UserService>();
             builder.Services.AddTransient<IAccountService, AccountService>();
             builder.Services.AddDbContext<ApplicationDbContext>();
-            builder.Services.AddControllers();
             builder.Services.AddOpenApi();
 
             var app = builder.Build();

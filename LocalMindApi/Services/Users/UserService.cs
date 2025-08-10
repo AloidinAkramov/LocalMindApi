@@ -1,5 +1,6 @@
 ﻿using LocalMindApi.Models.Users;
-using LocalMindApi.Repositories;
+using LocalMindApi.Repositories.UserAdditionalDetails;
+using LocalMindApi.Repositories.Users;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,10 +10,14 @@ namespace LocalMindApi.Services.Users
     public class UserService : IUserService
     {
         private readonly IUserRepository userRepository;
-
-        public UserService(IUserRepository userRepository) =>
+        private readonly IUserAdditionalDetailRepository userAdditionalDetailRepository;
+        public UserService(
+            IUserRepository userRepository, 
+            IUserAdditionalDetailRepository userAdditionalDetailRepository)
+        {
             this.userRepository = userRepository;
-        
+            this.userAdditionalDetailRepository = userAdditionalDetailRepository;
+        }
 
         public async ValueTask<User> AddUserAsync(User user)
         {
@@ -20,7 +25,14 @@ namespace LocalMindApi.Services.Users
             user.CreatedDate = now;
             user.UpdatedDate = now;
 
-            return await this.userRepository.InsertUserAsync(user);
+            await this.userRepository.InsertUserAsync(user);
+            if (user.UserAdditionalDetail != null)
+            { 
+                await this.userAdditionalDetailRepository
+                    .InsertUserAdditionalDetailAsync(user.UserAdditionalDetail);
+            }
+
+            return user;
         }
 
         public IQueryable<User> RetrieveAllUsers()
