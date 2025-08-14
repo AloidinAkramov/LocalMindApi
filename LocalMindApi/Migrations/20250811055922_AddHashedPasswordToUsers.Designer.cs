@@ -4,6 +4,7 @@ using LocalMindApi.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LocalMindApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250811055922_AddHashedPasswordToUsers")]
+    partial class AddHashedPasswordToUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,58 +24,6 @@ namespace LocalMindApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("LocalMindApi.Models.ChatDetails.ChatDetail", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ChatDetailId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ChatId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Source")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChatDetailId");
-
-                    b.HasIndex("ChatId");
-
-                    b.ToTable("ChatDetails");
-                });
-
-            modelBuilder.Entity("LocalMindApi.Models.Chats.Chat", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Chats");
-                });
 
             modelBuilder.Entity("LocalMindApi.Models.UserAdditionalDetails.UserAdditionalDetail", b =>
                 {
@@ -145,32 +96,6 @@ namespace LocalMindApi.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("LocalMindApi.Models.ChatDetails.ChatDetail", b =>
-                {
-                    b.HasOne("LocalMindApi.Models.ChatDetails.ChatDetail", null)
-                        .WithMany("ChatDetails")
-                        .HasForeignKey("ChatDetailId");
-
-                    b.HasOne("LocalMindApi.Models.Chats.Chat", "chat")
-                        .WithMany()
-                        .HasForeignKey("ChatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("chat");
-                });
-
-            modelBuilder.Entity("LocalMindApi.Models.Chats.Chat", b =>
-                {
-                    b.HasOne("LocalMindApi.Models.Users.User", "User")
-                        .WithMany("Chats")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("LocalMindApi.Models.UserAdditionalDetails.UserAdditionalDetail", b =>
                 {
                     b.HasOne("LocalMindApi.Models.Users.User", "User")
@@ -182,15 +107,8 @@ namespace LocalMindApi.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("LocalMindApi.Models.ChatDetails.ChatDetail", b =>
-                {
-                    b.Navigation("ChatDetails");
-                });
-
             modelBuilder.Entity("LocalMindApi.Models.Users.User", b =>
                 {
-                    b.Navigation("Chats");
-
                     b.Navigation("UserAdditionalDetail");
                 });
 #pragma warning restore 612, 618

@@ -1,4 +1,5 @@
-﻿using LocalMindApi.Models.UserCredentials;
+﻿using LocalMindApi.Helpers.LocalMindApi.Helpers;
+using LocalMindApi.Models.UserCredentials;
 using LocalMindApi.Models.UserTokens;
 using LocalMindApi.Services.Accounts;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,7 @@ namespace LocalMindApi.Controllers
 {
     [ApiController]
     public class AccountsController : ControllerBase
-    { 
+    {
         private readonly IAccountService accountService;
 
         public AccountsController(IAccountService accountService)
@@ -20,10 +21,11 @@ namespace LocalMindApi.Controllers
         public async ValueTask<ActionResult<UserToken>> LoginAsync(
             [FromBody] UserCredential userCredential)
         {
-            UserToken userToken = 
+            UserToken userToken =
                 await this.accountService.LoginAsync(userCredential);
 
             return Ok(userToken);
         }
+
     }
 }

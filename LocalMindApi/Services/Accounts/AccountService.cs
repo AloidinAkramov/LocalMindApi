@@ -1,4 +1,5 @@
 ﻿using LocalMindApi.CustomExceptions;
+using LocalMindApi.Helpers.LocalMindApi.Helpers;
 using LocalMindApi.Models.UserCredentials;
 using LocalMindApi.Models.Users;
 using LocalMindApi.Models.UserTokens;
@@ -32,10 +33,18 @@ namespace LocalMindApi.Services.Accounts
         {
             User maybeUser =
                await this.userRepository.SelectAllUsers()
-                    .FirstOrDefaultAsync(user => user.Username == userCredential.UserName &&
-                        user.Password == userCredential.Password);
+                    .FirstOrDefaultAsync(user => 
+                        user.Username == userCredential.UserName);
 
             if (maybeUser == null)
+            {
+                throw new NotFoundException("User is not found with given username and password!");
+            }
+
+            bool isPasswordEqual = HashingHelper
+                .IsHashValid(userCredential.Password, maybeUser.HashedPassword);
+
+            if (isPasswordEqual is false)
             {
                 throw new NotFoundException("User is not found with given username and password!");
             }

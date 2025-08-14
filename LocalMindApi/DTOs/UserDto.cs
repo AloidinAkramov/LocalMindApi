@@ -1,23 +1,17 @@
-﻿using LocalMindApi.Models.Chats;
-using LocalMindApi.Models.UserAdditionalDetails;
+﻿using LocalMindApi.Models.UserAdditionalDetails;
+using LocalMindApi.Models.Users;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace LocalMindApi.Models.Users
+namespace LocalMindApi.DTOs
 {
-    public class User
+    public class UserDto
     {
-        [Key]
-        [Required]
-        public Guid Id { get; set; }
-
         [Required]
         public string Username { get; set; }
 
         [Required]
-        public string HashedPassword { get; set; }
+        public string Password { get; set; }
 
         [Required]
         [MaxLength(50)]
@@ -33,10 +27,6 @@ namespace LocalMindApi.Models.Users
 
         public Role Role { get; set; }
 
-        public DateTimeOffset CreatedDate { get; set; }
-        public DateTimeOffset UpdatedDate { get; set; }
-
         public UserAdditionalDetail UserAdditionalDetail { get; set; }
-        public virtual ICollection<Chat> Chats {  get; set; }
     }
 }
